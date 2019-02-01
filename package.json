@@ -1,12 +1,27 @@
 {
   "name": "graphql-schema-subset",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
+  "description": "A library to build subsets of a given GraphQL Schema.",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "format": "prettier --write ./src/**/*",
+    "build": "tsc"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Jordan Gensler <jordangens@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "^14.1.1"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.0.5",
+    "@types/jest": "^23.3.13",
+    "@types/node": "^10.12.21",
+    "graphql-tag": "^2.10.1",
+    "jest": "^24.0.0",
+    "prettier": "^1.16.3",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.3.1"
+  }
 }
