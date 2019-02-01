@@ -19,7 +19,7 @@ function removeDirectivesFromTypes(typemap: TypeMap): GraphQLNamedType[] {
   types.map(type => {
     // @ts-ignore
     const fields = Object.values(type._fields || []);
-    fields.forEach((field) =>{
+    fields.forEach(field => {
       removeDirectivesFromField(field);
     });
   });
