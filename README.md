@@ -12,4 +12,3 @@ This is designed to build a subset of your schema that can be exposed publically
 ## TODO:
 
 - Add tests for enums and unions and such.
-- Add CLI.

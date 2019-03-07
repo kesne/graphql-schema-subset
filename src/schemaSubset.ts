@@ -26,13 +26,13 @@ export default function schemaSubset(
 
   const transformers = compact([
     options.removeDeprecated && removeDeprecatedFromSchema,
-      options.keepQueries &&
+    options.keepQueries &&
       !!options.keepQueries.length &&
       removeFieldsFromSchema('Query', options.keepQueries),
-      options.keepMutations &&
+    options.keepMutations &&
       !!options.keepMutations.length &&
       removeFieldsFromSchema('Mutation', options.keepMutations),
-      options.keepSubscriptions &&
+    options.keepSubscriptions &&
       !!options.keepSubscriptions.length &&
       removeFieldsFromSchema('Mutation', options.keepSubscriptions),
     removeDirectivesFromSchema,
@@ -41,5 +41,8 @@ export default function schemaSubset(
 
   return printSchema(
     transformers.reduce((ast, transform) => transform(ast), schemaAST),
+    {
+      commentDescriptions: true,
+    },
   );
 }

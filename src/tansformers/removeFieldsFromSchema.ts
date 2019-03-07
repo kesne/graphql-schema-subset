@@ -4,6 +4,8 @@ export default function removeFieldsFromSchema(
   scope: 'Query' | 'Mutation' | 'Subscription',
   keepFields: string[],
 ) {
+  const removeEverything = keepFields.filter(Boolean).length == 0;
+
   return (schema: GraphQLSchema) => {
     let type: GraphQLObjectType | undefined | null;
 
@@ -24,6 +26,21 @@ export default function removeFieldsFromSchema(
       }
     }
 
-    return schema;
+    return new GraphQLSchema({
+      query:
+        removeEverything && scope === 'Query'
+          ? undefined
+          : schema.getQueryType(),
+      mutation:
+        removeEverything && scope === 'Mutation'
+          ? undefined
+          : schema.getMutationType(),
+      subscription:
+        removeEverything && scope === 'Subscription'
+          ? undefined
+          : schema.getSubscriptionType() || undefined,
+      directives: Array.from(schema.getDirectives()),
+      types: Object.values(schema.getTypeMap()),
+    });
   };
 }
