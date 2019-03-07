@@ -1,6 +1,6 @@
 {
   "name": "graphql-schema-subset",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A library to build subsets of a given GraphQL Schema.",
   "main": "lib/index.js",
   "bin": "lib/cli.js",
