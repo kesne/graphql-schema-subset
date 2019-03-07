@@ -27,10 +27,7 @@ export default function removeFieldsFromSchema(
     }
 
     return new GraphQLSchema({
-      query:
-        removeEverything && scope === 'Query'
-          ? undefined
-          : schema.getQueryType(),
+      query: schema.getQueryType(),
       mutation:
         removeEverything && scope === 'Mutation'
           ? undefined
