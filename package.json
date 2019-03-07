@@ -8,7 +8,8 @@
     "test": "jest",
     "format": "prettier --write ./src/**/*",
     "build": "tsc",
-    "cli": "ts-node --transpile-only ./src/cli.ts"
+    "cli": "ts-node --transpile-only ./src/cli.ts",
+    "prepare": "npm run build"
   },
   "keywords": [],
   "author": "Jordan Gensler <jordangens@gmail.com>",
