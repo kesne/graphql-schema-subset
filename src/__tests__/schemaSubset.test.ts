@@ -96,6 +96,29 @@ type Query {
 `);
   });
 
+  it('allows removing everything', () => {
+    const schema = gql`
+      type Hello {
+        message: String
+      }
+
+      type Query {
+        hello: Hello
+        additional: String
+      }
+
+      type Mutation {
+        sendHello: String
+      }
+    `;
+
+    expect(schemaSubset(schema, { keepQueries: [], keepMutations: [] }))
+      .toMatchInlineSnapshot(`
+"
+"
+`);
+  });
+
   it('allows removing deprecated fields', () => {
     expect(
       schemaSubset(

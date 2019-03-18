@@ -26,14 +26,10 @@ export default function schemaSubset(
 
   const transformers = compact([
     options.removeDeprecated && removeDeprecatedFromSchema,
-    options.keepQueries &&
-      !!options.keepQueries.length &&
-      removeFieldsFromSchema('Query', options.keepQueries),
+    options.keepQueries && removeFieldsFromSchema('Query', options.keepQueries),
     options.keepMutations &&
-      !!options.keepMutations.length &&
       removeFieldsFromSchema('Mutation', options.keepMutations),
     options.keepSubscriptions &&
-      !!options.keepSubscriptions.length &&
       removeFieldsFromSchema('Mutation', options.keepSubscriptions),
     removeDirectivesFromSchema,
     removeUnusedTypesFromSchema,

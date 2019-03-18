@@ -4,7 +4,7 @@ export default function removeFieldsFromSchema(
   scope: 'Query' | 'Mutation' | 'Subscription',
   keepFields: string[],
 ) {
-  const removeEverything = keepFields.filter(Boolean).length == 0;
+  const removeEverything = keepFields.filter(Boolean).length === 0;
 
   return (schema: GraphQLSchema) => {
     let type: GraphQLObjectType | undefined | null;
@@ -27,7 +27,10 @@ export default function removeFieldsFromSchema(
     }
 
     return new GraphQLSchema({
-      query: schema.getQueryType(),
+      query:
+        removeEverything && scope === 'Query'
+          ? undefined
+          : schema.getQueryType(),
       mutation:
         removeEverything && scope === 'Mutation'
           ? undefined
