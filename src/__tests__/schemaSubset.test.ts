@@ -14,11 +14,11 @@ describe('graphql-schema-subset', () => {
         }
       `),
     ).toMatchInlineSnapshot(`
-"type Query {
-  hello: String!
-}
-"
-`);
+      "type Query {
+        hello: String!
+      }
+      "
+    `);
   });
 
   it('removes directives', () => {
@@ -38,16 +38,16 @@ describe('graphql-schema-subset', () => {
         }
       `),
     ).toMatchInlineSnapshot(`
-"type Hello {
-  old: String
-  new: String
-}
+      "type Hello {
+        old: String
+        new: String
+      }
 
-type Query {
-  hello: Hello
-}
-"
-`);
+      type Query {
+        hello: Hello
+      }
+      "
+    `);
   });
 
   it('allows specifying query fields to keep', () => {
@@ -64,36 +64,36 @@ type Query {
 
     expect(schemaSubset(schema, { keepQueries: ['hello'] }))
       .toMatchInlineSnapshot(`
-"type Hello {
-  message: String
-}
+      "type Hello {
+        message: String
+      }
 
-type Query {
-  hello: Hello
-}
-"
-`);
+      type Query {
+        hello: Hello
+      }
+      "
+    `);
 
     expect(schemaSubset(schema, { keepQueries: ['additional'] }))
       .toMatchInlineSnapshot(`
-"type Query {
-  additional: String
-}
-"
-`);
+      "type Query {
+        additional: String
+      }
+      "
+    `);
 
     expect(schemaSubset(schema, { keepQueries: ['hello', 'additional'] }))
       .toMatchInlineSnapshot(`
-"type Hello {
-  message: String
-}
+      "type Hello {
+        message: String
+      }
 
-type Query {
-  hello: Hello
-  additional: String
-}
-"
-`);
+      type Query {
+        hello: Hello
+        additional: String
+      }
+      "
+    `);
   });
 
   it('allows removing everything', () => {
@@ -114,9 +114,9 @@ type Query {
 
     expect(schemaSubset(schema, { keepQueries: [], keepMutations: [] }))
       .toMatchInlineSnapshot(`
-"
-"
-`);
+      "
+      "
+    `);
   });
 
   it('allows removing deprecated fields', () => {
@@ -136,14 +136,56 @@ type Query {
         { removeDeprecated: true },
       ),
     ).toMatchInlineSnapshot(`
-"type Hello {
-  new: String
-}
+      "type Hello {
+        new: String
+      }
 
-type Query {
-  hello: Hello
-}
-"
-`);
+      type Query {
+        hello: Hello
+      }
+      "
+    `);
+  });
+
+  it.only('allows defining custom directive visitors', () => {
+    expect(
+      schemaSubset(
+        gql`
+          directive @removeMe(
+            remove: Boolean
+          ) on FIELD_DEFINITION | ARGUMENT_DEFINITION
+
+          type Hello {
+            old: String @removeMe(remove: true)
+            new: String
+          }
+
+          type Query {
+            hello(
+              firstName: String @removeMe(remove: true)
+              lastName: String @removeMe(remove: false)
+            ): Hello
+            oldHello: Hello @removeMe(remove: false)
+          }
+        `,
+        {
+          directiveVisitors: {
+            removeMe({ remove }) {
+              return remove;
+            },
+          },
+        },
+      ),
+    ).toMatchInlineSnapshot(`
+      "type Hello {
+        new: String
+      }
+
+      type Query {
+        hello(lastName: String): Hello
+        oldHello: Hello
+      }
+      "
+    `);
   });
 });

@@ -8,6 +8,7 @@ import removeUnusedTypesFromSchema from './tansformers/removeUnusedTypesFromSche
 import removeDirectivesFromSchema from './tansformers/removeDirectivesFromSchema';
 import removeFieldsFromSchema from './tansformers/removeFieldsFromSchema';
 import removeDeprecatedFromSchema from './tansformers/removeDeprecatedFromSchema';
+import removeByVisitingDirectives, { Visitors } from './tansformers/removeByVisitingDirectives';
 import { compact } from './utils';
 
 interface SubsetOptions {
@@ -15,6 +16,7 @@ interface SubsetOptions {
   keepQueries?: string[];
   keepMutations?: string[];
   keepSubscriptions?: string[];
+  directiveVisitors?: Visitors;
 }
 
 export default function schemaSubset(
@@ -25,6 +27,7 @@ export default function schemaSubset(
     typeof schema === 'string' ? buildSchema(schema) : buildASTSchema(schema);
 
   const transformers = compact([
+    options.directiveVisitors && removeByVisitingDirectives(options.directiveVisitors),
     options.removeDeprecated && removeDeprecatedFromSchema,
     options.keepQueries && removeFieldsFromSchema('Query', options.keepQueries),
     options.keepMutations &&
